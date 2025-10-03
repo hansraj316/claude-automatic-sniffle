@@ -1,0 +1,117 @@
+# Model Configuration
+# Defines available Claude models and their settings
+
+models:
+  claude-sonnet-4-5:
+    id: "claude-sonnet-4-5-20250929"
+    name: "Claude Sonnet 4.5"
+    description: "Latest Sonnet model with enhanced reasoning"
+    max_tokens: 8192
+    context_window: 200000
+    pricing:
+      input_per_1k: 0.003
+      output_per_1k: 0.015
+    capabilities:
+      - text_generation
+      - code_generation
+      - analysis
+      - reasoning
+      - tool_use
+    recommended_for:
+      - general_purpose
+      - research
+      - document_analysis
+      - qa
+    temperature_range:
+      min: 0.0
+      max: 1.0
+      default: 0.7
+
+  claude-opus-4:
+    id: "claude-opus-4-20250514"
+    name: "Claude Opus 4"
+    description: "Most capable model for complex tasks"
+    max_tokens: 8192
+    context_window: 200000
+    pricing:
+      input_per_1k: 0.015
+      output_per_1k: 0.075
+    capabilities:
+      - text_generation
+      - code_generation
+      - analysis
+      - reasoning
+      - tool_use
+      - complex_planning
+    recommended_for:
+      - complex_research
+      - deep_analysis
+      - multi_step_reasoning
+      - critical_tasks
+    temperature_range:
+      min: 0.0
+      max: 1.0
+      default: 0.7
+
+# Model selection strategy
+selection_strategy:
+  default: "claude-sonnet-4-5-20250929"
+  fallback: "claude-opus-4-20250514"
+
+  task_based:
+    research: "claude-sonnet-4-5-20250929"
+    analysis: "claude-sonnet-4-5-20250929"
+    qa: "claude-sonnet-4-5-20250929"
+    summary: "claude-sonnet-4-5-20250929"
+    citation: "claude-sonnet-4-5-20250929"
+    complex_reasoning: "claude-opus-4-20250514"
+    critical_analysis: "claude-opus-4-20250514"
+
+  cost_optimization:
+    enabled: true
+    prefer_sonnet: true
+    use_opus_when:
+      - task_complexity: "high"
+      - accuracy_required: "critical"
+      - previous_attempts_failed: true
+
+# Performance settings
+performance:
+  streaming:
+    enabled: true
+    chunk_size: 512
+
+  caching:
+    enabled: true
+    ttl: 3600  # seconds
+    max_cache_size: 1000  # MB
+
+  rate_limiting:
+    requests_per_minute: 50
+    tokens_per_minute: 80000
+    burst_allowance: 10
+
+# Safety and moderation
+safety:
+  content_filtering:
+    enabled: true
+    block_harmful: true
+    warn_on_bias: true
+
+  output_validation:
+    enabled: true
+    max_repetition: 3
+    check_coherence: true
+
+# Usage tracking
+tracking:
+  enabled: true
+  metrics:
+    - token_usage
+    - request_count
+    - latency
+    - error_rate
+  reporting:
+    interval: 3600  # seconds
+    format: "json"
+    destination: "logs/usage_metrics.json"

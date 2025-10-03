@@ -1,0 +1,134 @@
+# Agent Configuration
+# Defines settings for all agents in the Research Hub system
+
+orchestrator:
+  name: "Document Orchestrator"
+  model: "claude-sonnet-4-5-20250929"
+  description: "Main coordinator for multi-agent workflows"
+  max_tokens: 4000
+  temperature: 0.7
+  timeout: 300  # seconds
+
+web_researcher:
+  name: "Web Research Agent"
+  model: "claude-sonnet-4-5-20250929"
+  description: "Specialized in web search and information gathering"
+  max_tokens: 3000
+  temperature: 0.5
+  tools:
+    - search_web
+    - extract_content
+    - extract_links
+  search_settings:
+    max_results: 10
+    timeout: 30
+
+document_analyzer:
+  name: "Document Analyzer Agent"
+  model: "claude-sonnet-4-5-20250929"
+  description: "Analyzes documents and extracts insights"
+  max_tokens: 3000
+  temperature: 0.3
+  tools:
+    - read_file
+    - store_document
+    - search_documents
+  analysis_types:
+    - general
+    - research
+    - technical
+    - comparative
+    - sentiment
+
+summary_generator:
+  name: "Summary Generator Agent"
+  model: "claude-sonnet-4-5-20250929"
+  description: "Creates summaries and reports"
+  max_tokens: 4000
+  temperature: 0.4
+  tools:
+    - write_file
+  summary_types:
+    - executive
+    - standard
+    - technical
+    - abstract
+    - bullet_point
+  length_options:
+    brief: 100
+    medium: 300
+    detailed: 600
+
+qa_agent:
+  name: "Q&A Agent"
+  model: "claude-sonnet-4-5-20250929"
+  description: "Answers questions using context"
+  max_tokens: 2500
+  temperature: 0.6
+  tools:
+    - search_documents
+    - get_qa_history
+    - store_qa
+  confidence_threshold: 0.7
+
+citation_manager:
+  name: "Citation Manager Agent"
+  model: "claude-sonnet-4-5-20250929"
+  description: "Manages citations and references"
+  max_tokens: 1500
+  temperature: 0.2
+  tools:
+    - store_citation
+    - search_documents
+  citation_styles:
+    - APA
+    - MLA
+    - Chicago
+    - IEEE
+    - Harvard
+  default_style: "APA"
+
+# Workflow presets
+workflows:
+  research:
+    name: "Research Workflow"
+    agents:
+      - web_researcher
+      - document_analyzer
+      - summary_generator
+    strategy: "sequential"
+    timeout: 600
+
+  qa:
+    name: "Question & Answer Workflow"
+    agents:
+      - document_analyzer
+      - qa_agent
+    strategy: "sequential"
+    timeout: 180
+
+  summary:
+    name: "Summary Workflow"
+    agents:
+      - summary_generator
+    strategy: "sequential"
+    timeout: 120
+
+  comprehensive:
+    name: "Comprehensive Research Workflow"
+    agents:
+      - web_researcher
+      - document_analyzer
+      - summary_generator
+      - citation_manager
+    strategy: "sequential"
+    timeout: 900
+
+# System settings
+system:
+  default_model: "claude-sonnet-4-5-20250929"
+  fallback_model: "claude-opus-4-20250514"
+  max_concurrent_agents: 5
+  handoff_timeout: 60
+  retry_attempts: 3
+  log_level: "INFO"

@@ -1,0 +1,112 @@
+{
+  "mcpServers": {
+    "filesystem": {
+      "command": "python",
+      "args": ["mcp_servers/filesystem_server.py"],
+      "env": {},
+      "description": "File system operations for document management",
+      "enabled": true,
+      "tools": [
+        "read_file",
+        "write_file",
+        "list_files",
+        "delete_file"
+      ],
+      "settings": {
+        "base_path": "./knowledge_base",
+        "max_file_size": 10485760,
+        "allowed_extensions": [
+          ".txt",
+          ".md",
+          ".pdf",
+          ".json",
+          ".csv",
+          ".py",
+          ".js"
+        ]
+      }
+    },
+    "websearch": {
+      "command": "python",
+      "args": ["mcp_servers/websearch_server.py"],
+      "env": {},
+      "description": "Web search and content extraction",
+      "enabled": true,
+      "tools": [
+        "search_web",
+        "extract_content",
+        "extract_links"
+      ],
+      "settings": {
+        "default_search_engine": "duckduckgo",
+        "max_results": 10,
+        "timeout": 30,
+        "user_agent": "Mozilla/5.0 (compatible; ResearchHub/1.0)"
+      }
+    },
+    "database": {
+      "command": "python",
+      "args": ["mcp_servers/database_server.py"],
+      "env": {},
+      "description": "SQLite database and vector storage",
+      "enabled": true,
+      "tools": [
+        "store_document",
+        "search_documents",
+        "get_document",
+        "store_citation",
+        "store_qa",
+        "get_qa_history"
+      ],
+      "settings": {
+        "db_path": "./knowledge_base/research_hub.db",
+        "enable_fts": true,
+        "vector_dimensions": 1536
+      }
+    },
+    "github": {
+      "command": "python",
+      "args": ["mcp_servers/github_server.py"],
+      "env": {
+        "GITHUB_TOKEN": "${GITHUB_TOKEN}"
+      },
+      "description": "GitHub integration for code and documentation",
+      "enabled": true,
+      "tools": [
+        "search_repositories",
+        "get_repository_info",
+        "get_file_content",
+        "list_repository_files",
+        "search_code"
+      ],
+      "settings": {
+        "api_version": "2022-11-28",
+        "rate_limit_buffer": 100
+      }
+    }
+  },
+  "serverDefaults": {
+    "timeout": 60,
+    "retries": 3,
+    "stdio_transport": true,
+    "error_handling": {
+      "log_errors": true,
+      "raise_on_error": false
+    }
+  },
+  "security": {
+    "allowed_hosts": [
+      "localhost",
+      "127.0.0.1"
+    ],
+    "require_auth": false,
+    "sandbox_mode": true
+  },
+  "logging": {
+    "level": "INFO",
+    "format": "%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    "file": "logs/mcp_servers.log",
+    "max_size": 10485760,
+    "backup_count": 5
+  }
+}
