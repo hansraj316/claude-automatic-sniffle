@@ -6,6 +6,7 @@ from .document_analyzer import DocumentAnalyzerAgent
 from .summary_generator import SummaryGeneratorAgent
 from .qa_agent import QAAgent
 from .citation_manager import CitationManagerAgent
+from .agent_coordinator import AgentCoordinator, HandoffPlan, HandoffStrategy
 
 __all__ = [
     "DocumentOrchestrator",
@@ -16,5 +17,8 @@ __all__ = [
     "DocumentAnalyzerAgent",
     "SummaryGeneratorAgent",
     "QAAgent",
-    "CitationManagerAgent"
+    "CitationManagerAgent",
+    "AgentCoordinator",
+    "HandoffPlan",
+    "HandoffStrategy"
 ]
